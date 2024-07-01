@@ -1,16 +1,19 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
+const Thing = require("./models/Thing");
 
 const app = express();
 
-const mongoose = require("mongoose");
-
-// Utilisez le nouvel utilisateur de test
 mongoose
   .connect(
-    "mongodb+srv://maxime01:testpassword123@cluster0.hgetnuz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://maxime01:testpassword123@cluster0.hgetnuz.mongodb.net/test?retryWrites=true&w=majority"
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
-  .catch(() => console.log("Connexion à MongoDB échouée !"));
+  .catch((error) => {
+    console.error("Connexion à MongoDB échouée !", error);
+    process.exit(1); // Arrêter le serveur en cas d'échec de la connexion
+  });
 
 app.use(express.json());
 
@@ -28,34 +31,28 @@ app.use((req, res, next) => {
 });
 
 app.post("/api/stuff", (req, res) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: "Objet créé !",
+  console.log("Données reçues :", req.body); // Log pour vérifier les données reçues
+
+  delete req.body._id;
+  const thing = new Thing({
+    ...req.body,
   });
+  thing
+    .save()
+    .then(() => res.status(201).json({ message: "Objet enregistré !" }))
+    .catch((error) => res.status(400).json({ error }));
+});
+
+app.get("/api/stuff/:id", (req, res, next) => {
+  Thing.findOne({ _id: req.params.id })
+    .then((thing) => res.status(200).json(thing))
+    .catch((error) => res.status(404).json({ error }));
 });
 
 app.get("/api/stuff", (req, res) => {
-  const stuff = [
-    {
-      _id: "oeihfzeoi",
-      title: "Mon premier objet",
-      description: "Les infos de mon premier objet",
-      imageUrl:
-        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-      price: 4900,
-      userId: "gsomihvgios", // Correction: 'usezId' to 'userId'
-    },
-    {
-      _id: "oeihfzeomoihi",
-      title: "Mon deuxième objet",
-      description: "Les infos de mon deuxième objet",
-      imageUrl:
-        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-      price: 2900,
-      userId: "gsomihvgios", // Correction: 'usezId' to 'userId'
-    },
-  ];
-  res.status(200).json(stuff);
+  Thing.find()
+    .then((things) => res.status(200).json(things))
+    .catch((error) => res.status(400).json({ error }));
 });
 
 module.exports = app;
