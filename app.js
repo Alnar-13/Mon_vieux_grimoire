@@ -2,6 +2,16 @@ const express = require("express");
 
 const app = express();
 
+const mongoose = require("mongoose");
+
+// Utilisez le nouvel utilisateur de test
+mongoose
+  .connect(
+    "mongodb+srv://maxime01:testpassword123@cluster0.hgetnuz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then(() => console.log("Connexion à MongoDB réussie !"))
+  .catch(() => console.log("Connexion à MongoDB échouée !"));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -17,14 +27,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/stuff", (req, res, next) => {
+app.post("/api/stuff", (req, res) => {
   console.log(req.body);
   res.status(201).json({
     message: "Objet créé !",
   });
 });
 
-app.get("/api/stuff", (req, res, next) => {
+app.get("/api/stuff", (req, res) => {
   const stuff = [
     {
       _id: "oeihfzeoi",
