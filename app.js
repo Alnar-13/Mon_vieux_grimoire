@@ -1,16 +1,15 @@
+// app.js
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
-const stuffRoutes = require("./routes/stuff");
+const bookRoutes = require("./routes/book");
 const userRoutes = require("./routes/user");
 require("dotenv").config();
 
 const app = express();
 
 mongoose
-  .connect(
-process.env.MONGOURL
-  )
+  .connect(process.env.MONGOURL)
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch((error) => {
     console.error("Connexion à MongoDB échouée !", error);
@@ -33,7 +32,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/stuff", stuffRoutes);
+app.use("/api/books", bookRoutes);
 app.use("/api/auth", userRoutes);
 app.use("/images", express.static(path.join(__dirname, "images")));
 
