@@ -3,17 +3,19 @@ const path = require("path");
 const mongoose = require("mongoose");
 const stuffRoutes = require("./routes/stuff");
 const userRoutes = require("./routes/user");
+require("dotenv").config();
 
 const app = express();
 
-mongoose.connect(
-  process.env.MONGO_URI || "mongodb+srv://maxime01:testpassword123@cluster0.hgetnuz.mongodb.net/test?retryWrites=true&w=majority"
-)
-.then(() => console.log("Connexion à MongoDB réussie !"))
-.catch((error) => {
-  console.error("Connexion à MongoDB échouée !", error);
-  process.exit(1);
-});
+mongoose
+  .connect(
+process.env.MONGOURL
+  )
+  .then(() => console.log("Connexion à MongoDB réussie !"))
+  .catch((error) => {
+    console.error("Connexion à MongoDB échouée !", error);
+    process.exit(1);
+  });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
