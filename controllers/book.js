@@ -1,4 +1,4 @@
-// controllers/book.js
+
 const Book = require("../models/Book");
 const fs = require("fs");
 
@@ -91,3 +91,4 @@ exports.rateBook = (req, res) => {
     })
     .catch((error) => res.status(404).json({ error }));
 };
+
