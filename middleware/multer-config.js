@@ -66,4 +66,3 @@ const optimizeImage = (req, res, next) => {
 
 // Exportation de la configuration multer et du middleware d'optimisation pour être utilisés comme middlewares dans les routes
 module.exports = { upload, optimizeImage };
-
