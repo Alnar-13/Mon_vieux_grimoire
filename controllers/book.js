@@ -40,10 +40,7 @@ exports.createBook = (req, res) => {
     // Ajout de l'userId de l'utilisateur authentifié à l'objet book
     userId: req.auth.userId,
     // Ajout de l'URL de l'image en fonction de la présence ou non d'un fichier dans la requête
-    imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : req.body.imageUrl,
-    // Initialisation de la note moyenne et du tableau des évaluations
-    averageRating: 0, // Modifier sa pour mettre a jours 
-    ratings: [], 
+    imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : req.body.imageUrl
   });
 
   // Sauvegarde du nouveau livre dans la base de données
@@ -51,6 +48,7 @@ exports.createBook = (req, res) => {
     .then(() => res.status(201).json({ message: "Livre enregistré !" }))  // Envoi d'une réponse de succès avec le statut 201
     .catch((error) => res.status(400).json({ error }));  // Envoi d'une réponse d'erreur en cas d'échec de la sauvegarde
 };
+
 
 
 // Fonction pour modifier un livre existant
