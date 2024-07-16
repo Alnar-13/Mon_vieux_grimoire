@@ -42,8 +42,8 @@ exports.createBook = (req, res) => {
     // Ajout de l'URL de l'image en fonction de la présence ou non d'un fichier dans la requête
     imageUrl: req.file ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : req.body.imageUrl,
     // Initialisation de la note moyenne et du tableau des évaluations
-    averageRating: 0,
-    ratings: [],
+    averageRating: 0, // Modifier sa pour mettre a jours 
+    ratings: [], 
   });
 
   // Sauvegarde du nouveau livre dans la base de données

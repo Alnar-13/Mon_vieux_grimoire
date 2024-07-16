@@ -36,33 +36,33 @@ const storage = multer.diskStorage({
 const upload = multer({ storage }).single("image");
 
 // Middleware pour optimiser l'image après le téléchargement
-const optimizeImage = (req, res, next) => {
-  if (!req.file) {
-    return next();
-  }
+// const optimizeImage = (req, res, next) => {
+//   if (!req.file) {
+//     return next();
+//   }
 
-  const outputPath = path.join("images", req.file.filename);
+//   const outputPath = path.join("images", req.file.filename);
 
-  sharp(req.file.path)
-    .resize(800) // Redimensionner l'image à une largeur maximale de 800px
-    .toFormat('jpeg') // Convertir l'image au format JPEG
-    .jpeg({ quality: 80 }) // Compresser l'image avec une qualité de 80%
-    .toFile(outputPath, (err, info) => {
-      if (err) {
-        return next(err);
-      }
-      // Supprimer le fichier original non optimisé
-      fs.unlink(req.file.path, (unlinkErr) => {
-        if (unlinkErr) {
-          return next(unlinkErr);
-        }
-        // Mettre à jour le chemin de l'image dans la requête
-        req.file.path = outputPath;
-        req.file.filename = path.basename(outputPath);
-        next();
-      });
-    });
-};
+//   sharp(req.file.path)
+//     .resize(800) // Redimensionner l'image à une largeur maximale de 800px
+//     .toFormat('jpeg') // Convertir l'image au format JPEG
+//     .jpeg({ quality: 80 }) // Compresser l'image avec une qualité de 80%
+//     .toFile(outputPath, (err, info) => {
+//       if (err) {
+//         return next(err);
+//       }
+//       // Supprimer le fichier original non optimisé
+//       fs.unlink(req.file.path, (unlinkErr) => {
+//         if (unlinkErr) {
+//           return next(unlinkErr);
+//         }
+//         // Mettre à jour le chemin de l'image dans la requête
+//         req.file.path = outputPath;
+//         req.file.filename = path.basename(outputPath);
+//         next();
+//       });
+//     });
+// };
 
 // Exportation de la configuration multer et du middleware d'optimisation pour être utilisés comme middlewares dans les routes
-module.exports = { upload, optimizeImage };
+module.exports = { upload};

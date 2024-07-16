@@ -5,7 +5,6 @@ const http = require("http");
 const app = require("./app");
 
 // Configuration du port sur lequel le serveur va écouter les requêtes
-// Le port est soit celui défini dans les variables d'environnement (process.env.PORT) ou par défaut 4000
 app.set("port", process.env.PORT || 4000);
 
 // Création du serveur HTTP en utilisant l'application express

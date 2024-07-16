@@ -5,21 +5,21 @@ const User = require("../models/user"); // Modèle utilisateur
 
 // Fonction pour l'inscription des utilisateurs
 exports.signup = (req, res, next) => {
-  console.log("Received signup request");
+  console.log("Réception d'une demande d'inscription");
 
   // Vérification de la présence de l'email et du mot de passe dans la requête
   if (!req.body.email || !req.body.password) {
-    console.log("Missing email or password");
+    console.log("Courriel ou mot de passe manquant");
     return res.status(400).json({ error: "Email et mot de passe requis" });
   }
 
-  console.log("Email and password provided:", req.body.email);
+  console.log("Email et mot de passe fournis:", req.body.email);
 
   // Hachage du mot de passe
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
-      console.log("Password hashed successfully");
+      console.log("Le mot de passe a été haché avec succès");
 
       // Création d'un nouvel utilisateur avec l'email et le mot de passe haché
       const user = new User({
@@ -31,16 +31,16 @@ exports.signup = (req, res, next) => {
       user
         .save()
         .then(() => {
-          console.log("User saved successfully");
+          console.log("L'utilisateur a été enregistré avec succès");
           res.status(201).json({ message: "Utilisateur créé !" });
         })
         .catch((error) => {
-          console.log("Error saving user:", error);
+          console.log("Erreur d'enregistrement de l'utilisateur:", error);
           res.status(400).json({ error });
         });
     })
     .catch((error) => {
-      console.log("Error hashing password:", error);
+      console.log("Erreur de hachage du mot de passe:", error);
       res.status(500).json({ error });
     });
 };
